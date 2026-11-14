@@ -1,0 +1,328 @@
+@import 'tailwindcss';
+
+/* ─────────────────────── ParaliLink · "field journal" design tokens ───────────────────────
+   Paper grounds, forest green, sage, straw gold, soil-dark text.
+   Text pairs used in the UI meet WCAG AA contrast. */
+@theme {
+  --color-paper: #f3eee2;
+  --color-paper-light: #fbf8f0;
+  --color-husk: #e9e2d0;
+  --color-survey: #eae3cf;
+  --color-forest: #1c3324;
+  --color-forest-deep: #12241a;
+  --color-sage: #a3b396;
+  --color-sage-light: #dce3d2;
+  --color-straw: #d8a532;
+  --color-straw-light: #f0d58c;
+  --color-straw-dark: #8a6a12;
+  --color-soil: #1a1c17;
+  --color-stone: #5e6157;
+  --color-stone-dark: #4a4d44;
+  --color-danger: #a8321e;
+
+  /* Mukta Mahee after each Latin face: any Gurmukhi letters fall back to it. */
+  --font-display: 'Big Shoulders Display', 'Mukta Mahee', Impact, 'Arial Narrow', sans-serif;
+  --font-serif: 'Instrument Serif', 'Mukta Mahee', Georgia, serif;
+  --font-sans: 'Hanken Grotesk', 'Mukta Mahee', ui-sans-serif, system-ui, sans-serif;
+  --font-pa: 'Mukta Mahee', 'Noto Sans Gurmukhi', sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-kenburns: kenburns 3.2s var(--ease-out-expo) both;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-blink: blink 1.6s ease-in-out infinite;
+  --animate-grow: grow 0.9s var(--ease-out-expo) both;
+
+  @keyframes kenburns {
+    from {
+      transform: scale(1.14);
+    }
+    to {
+      transform: scale(1.02);
+    }
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes grow {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-paper font-sans text-soil antialiased;
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-straw);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--color-straw);
+    color: var(--color-forest-deep);
+  }
+}
+
+@layer components {
+  /* Page width wrapper with fluid side gutters. */
+  .shell {
+    width: 100%;
+    max-width: 1400px;
+    margin-inline: auto;
+    padding-inline: clamp(20px, 4vw, 56px);
+  }
+  /* Tall condensed uppercase headlines, like silo signage. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.86;
+  }
+  /* Punjabi headline: same weight and colour role as .display, Gurmukhi-friendly line height. */
+  .pa-head {
+    font-family: var(--font-pa);
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: 0;
+  }
+  /* In a Punjabi headline the accent phrase keeps its colour but not the Latin italic serif. */
+  .pa-head .accent {
+    font-family: var(--font-pa);
+    font-style: normal;
+    font-weight: 700;
+  }
+  /* One emotive phrase per headline. */
+  .accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  /* Data labels, section numbers, buttons. */
+  /* Small UI text: buttons, tags, column headers, captions under numbers. */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .pa {
+    font-family: var(--font-pa);
+  }
+}
+
+/* ───────────── Real-map cluster illustration (home · "The system") ───────────── */
+/* Tone the street tiles slightly toward the paper palette without losing realism. */
+.pl-map .leaflet-tile-pane {
+  filter: saturate(0.82) sepia(0.08) contrast(0.98);
+}
+.pl-map .leaflet-container {
+  background: var(--color-survey);
+  font-family: var(--font-sans);
+}
+.pl-map .leaflet-control-zoom a {
+  border-radius: 0 !important;
+  color: var(--color-soil);
+}
+.pl-map .leaflet-control-attribution {
+  font-size: 10px;
+  background: rgb(251 248 240 / 0.9);
+}
+.pl-map .leaflet-control-scale-line {
+  border-color: var(--color-soil);
+  background: rgb(251 248 240 / 0.9);
+  font-family: var(--font-sans);
+  font-size: 10px;
+}
+.pl-farm-icon .pl-farm {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-forest);
+  border: 2px solid var(--color-paper-light);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
+  transform: translate(var(--dx), var(--dy));
+  transition: transform 1.5s var(--ease-out-expo) var(--delay);
+}
+.pl-ring {
+  opacity: 0;
+  transition: opacity 0.9s ease 1s;
+}
+.pl-label-icon {
+  width: auto !important;
+}
+.pl-label {
+  display: inline-block;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 4px 8px;
+  background: var(--color-forest);
+  color: var(--color-straw-light);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.7s ease var(--delay);
+}
+.is-settled .pl-farm {
+  transform: translate(0, 0);
+}
+.is-settled .pl-ring,
+.is-settled .pl-label {
+  opacity: 1;
+}
+
+/* ───────────── Buyer supply map markers ───────────── */
+.pl-plant {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transform: translate(-50%, -50%);
+  padding: 6px 9px;
+  background: var(--color-forest-deep);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+}
+.pl-plant-icon {
+  width: auto !important;
+  height: auto !important;
+}
+.pl-cluster-icon {
+  position: relative;
+}
+.pl-cluster {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, opacity 0.4s ease, background-color 0.25s ease;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+}
+.pl-cluster.is-ready {
+  background: var(--color-forest);
+  color: var(--color-paper);
+}
+.pl-cluster.is-forming {
+  background: rgb(240 213 140 / 0.85);
+  color: #4f3b07;
+  border: 2px dashed var(--color-straw-dark);
+}
+.pl-cluster.is-selected {
+  background: var(--color-straw);
+  color: var(--color-forest-deep);
+  box-shadow: 0 0 0 4px rgb(255 255 255 / 0.9), 0 0 0 7px var(--color-straw);
+}
+.pl-cluster:hover {
+  box-shadow: 0 0 0 4px rgb(216 165 50 / 0.5);
+}
+.pl-cluster.is-dim {
+  opacity: 0.18;
+}
+.pl-cluster.is-dim + .pl-cluster-label {
+  opacity: 0;
+}
+.pl-cluster-label {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 2px 6px;
+  background: rgb(251 248 240 / 0.95);
+  color: var(--color-soil);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  pointer-events: none;
+}
+.pl-route-stop {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  background: var(--color-forest);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  border: 2px solid var(--color-paper-light);
+}
+.pl-route-stop.is-done {
+  background: var(--color-forest);
+}
+.pl-route-stop.is-next {
+  background: var(--color-straw);
+  color: var(--color-forest-deep);
+}
+.pl-route-stop.is-later {
+  background: var(--color-paper-light);
+  color: var(--color-forest);
+  border-color: var(--color-forest);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Leaflet ships its own fonts (Helvetica, Lucida Console on the zoom buttons); use ours. */
+body .leaflet-container,
+body .leaflet-container .leaflet-control-zoom a,
+body .leaflet-container .leaflet-control-attribution {
+  font-family: var(--font-sans);
+}
